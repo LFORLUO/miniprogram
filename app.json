@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "story/story",
+    "mine/mine",
+    "userpage/user"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "碎片小故事",
+    "navigationBarTextStyle": "black"
+  }
+}

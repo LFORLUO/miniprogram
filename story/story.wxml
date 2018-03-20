@@ -1,0 +1,55 @@
+<swiper style='height:100%' skip-hidden-item-layout="true" circular ="true" duration="150" resistanceRatio='0.01' allowSwipeToPrev='false' onTransitionStart="changestoryid">
+  <block wx:for='{{stories}}' wx:for-item='story' wx:key="objectId" style='height:100%' > 
+  <swiper-item style='height:100%' class="swiper">
+    <view class="title">{{story.title}}</view>
+    <view class="label">#{{story.label}}#</view>
+    <view class='label'>{{story.rule}}</view>
+<!-- snippets -->
+    <view wx:for="{{snippets}}" wx:for-item="snippet" wx:key="objectId">
+      <image src='{{snippet.avatar}}' class="avatar"  wx:if="{{snippet.include.objectId == story.objectId}}"></image>
+      <text class="nickName" wx:if="{{snippet.include.objectId == story.objectId}}">{{snippet.nickName}}</text>
+<!-- 点赞 -->
+      <view class='like'>
+      <image animation="{{animationUp}}" src='../icons/unlike.png' bindtap='uplike' data-id="{{snippet.objectId}}" class="heart" wx:if="{{snippet.include.objectId == story.objectId}}"></image>
+      <text class='likenum' wx:if="{{snippet.include.objectId == story.objectId}}" bindtap='uplike' data-id="{{snippet.objectId}}">{{snippet.likenum}}</text>
+      </view>
+<!-- content -->
+      <view bindlongpress="editsnip" data-id="{{snippet.objectId}}"  class="snippet" wx:if="{{snippet.include.objectId == story.objectId}}" hover-class='tapsnippet' hover-stay-time='50' bindtouchstart="touchStart" bindtouchend="touchEnd" bindtap='doubleTap' >
+
+        <view  data-id="{{snippet.objectId}}" wx:if="{{snippet.objectId != editedsnip.objectId}}" bindlongpress="editsnip">
+        {{snippet.content}}
+        </view>
+<!-- eidt -->
+        <view class='snippet' wx:elif="{{snippet.objectId == editedsnip.objectId}}">
+        <input 
+        wx:if='{{snippet.user.objectId == user.objectId}}'
+        data-id="{{snippet.objectId}}" 
+        value="{{snippet.content}}" 
+        focus="auto"
+        adjust-position='true'
+        bindinput="updateeditedcontent"
+        bindblur="canceledit" 
+        bindconfirm='doneedit'>
+        </input>
+        <button class="check"  wx:if="{{snippet.user.objectId == user.objectId}}"  data-id="{{snippet.objectId}}"  bindtouchstart="doneedit"></button>
+        </view>
+      </view>
+    </view>
+    <view class='total'>{{story.snipnum}}/20</view>
+<!-- add new snippet -->    
+    <view class="snippet" wx:if="{{story.snipnum<20}}">
+    <input
+    placeholder="点我续写~" 
+    adjust-position='true'
+    bindinput="updatecontent" 
+    value="{{content}}" 
+    ></input>
+    <view class='like'>
+     <image class="checkimage" hidden="{{content}}" src="../icons/uncheck.png"></image>
+     <image class="checkimage" hidden="{{!content}}" src="../icons/yellowcheck.png" ontap="addsnippet" data-story-id="{{story.objectId}}"></image> 
+    </view>
+    </view>
+    <view class='loveyou'>(我也爱你)</view>
+  </swiper-item>
+  </block>
+</swiper>
